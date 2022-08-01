@@ -49,7 +49,6 @@ export default {
   },
   methods: {
     async checkUserCache() {
-      console.log("Checking Cache");
       const user = JSON.parse(localStorage.getItem("sorta-sql-user")) || null;
       const ghAccessToken =
         JSON.parse(localStorage.getItem("sorta-sql-user")) || null;
@@ -57,7 +56,6 @@ export default {
       ghAccessToken && this.$store.dispatch("setGithubAccessToken", user);
       user &&
         this.$store.dispatch("setUser", user).then(() => {
-          console.log("setting user state");
           if (this.isAuthenticated) this.$router.push({ name: "Dashboard" });
         });
     },
