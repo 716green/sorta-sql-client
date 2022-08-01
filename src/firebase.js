@@ -31,7 +31,8 @@ export const githubSignin = async () => {
       const credential = GithubAuthProvider.credentialFromResult(result);
       const token = credential.accessToken;
 
-      // The signed-in user info.
+      store.dispatch("setGithubAccessToken", token);
+
       const user = result.user;
       console.log("success", { user, token });
       return { user, error: null };
@@ -57,6 +58,7 @@ export const githubSignOut = () => {
     .then(() => {
       console.log("signed out");
       store.dispatch("signUserOut");
+      localStorage.removeItem("sorta-sql-user");
       // TODO - redirect to login
     })
     .catch((err) => {

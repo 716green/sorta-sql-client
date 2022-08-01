@@ -39,12 +39,28 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "Login",
+  async mounted() {
+    await this.checkUserCache();
+  },
   computed: {
     ...mapGetters({
       isAuthenticated: "getIsAuthenticated",
     }),
   },
   methods: {
+    async checkUserCache() {
+      console.log("Checking Cache");
+      const user = JSON.parse(localStorage.getItem("sorta-sql-user")) || null;
+      const ghAccessToken =
+        JSON.parse(localStorage.getItem("sorta-sql-user")) || null;
+
+      ghAccessToken && this.$store.dispatch("setGithubAccessToken", user);
+      user &&
+        this.$store.dispatch("setUser", user).then(() => {
+          console.log("setting user state");
+          if (this.isAuthenticated) this.$router.push({ name: "Dashboard" });
+        });
+    },
     async loginWithGithub() {
       const user = await githubSignin();
       console.log({ user });
